@@ -19,16 +19,10 @@ public static class FunctionalExtensions
     public static bool Validate<T>(this T @this, params Func<T, bool>[] predicates) => predicates.All(p => p(@this));
 
     // The term 'Tee' is named after the Unix command 'tee', which is named after the T-shaped pipe fitting.
-    public static Option<T> Tee<T>(this Option<T> @this, Action<Option<T>> action)
-    {
-        action(@this);
-        return @this;
-    }
-
-    // We might want to have a Tee method for non-option types as well.
     public static T Tee<T>(this T @this, Action<T> action)
     {
-        action(@this);
+        if (@this is not null && @this is not None<T>)
+            action(@this);
         return @this;
     }
 }
